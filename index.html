@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הארנק שלי 💰</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --pink: #FFD6E0;
+            --pink-dark: #FFB6C8;
+            --mint: #B8E8D0;
+            --mint-dark: #8DD4B8;
+            --gold: #D4AF37;
+            --gold-light: #F0D060;
+            --white: #FFFAF5;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: var(--pink);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .bsd {
+            text-align: left;
+            font-size: 16px;
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .current-date {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--gold);
+            font-size: 42px;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .wallet {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+            border: 3px solid var(--gold);
+            margin-bottom: 30px;
+        }
+        
+        .balances-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .balance-box {
+            flex: 1;
+            min-width: 100px;
+            height: 100px;
+            text-align: center;
+            padding: 12px 8px;
+            border-radius: 20px;
+            border: 2px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .balance-box.wallet-balance {
+            background: var(--pink);
+        }
+        
+        .balance-box.savings-balance {
+            background: var(--mint);
+        }
+        
+        .balance-box.bank-balance {
+            background: #e0e0e0;
+        }
+        
+        .balance-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .balance-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--gold);
+        }
+        
+        .wallet-contents {
+            background: var(--mint);
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 100px;
+            border: 2px dashed var(--mint-dark);
+            margin-bottom: 20px;
+        }
+        
+        .wallet-contents-title {
+            text-align: center;
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .money-in-wallet {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .money-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .money-count {
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            background: white;
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+        
+        .money-time {
+            font-size: 11px;
+            color: #888;
+            direction: ltr;
+        }
+        
+        .empty-wallet {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            padding: 30px;
+        }
+        
+        .deposit-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid var(--pink-dark);
+        }
+        
+        .section-title {
+            text-align: center;
+            color: var(--gold);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .subsection-title {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin: 15px 0 10px 0;
+        }
+        
+        .money-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .money-btn {
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .money-btn:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .money-btn:active {
+            opacity: 0.8;
+        }
+        
+        .coin-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            padding: 0;
+            justify-content: center;
+            background: radial-gradient(circle at 30% 30%, #f0f0f0, #a0a0a0);
+            color: #404040;
+            border: 3px solid #808080;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3), inset -2px -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .coin-btn.gold {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 50% 50%, #ffe070 0%, #c09020 55%, #a0a0a0 56%, #c0c0c0 80%, #909090 100%);
+            color: #5a4010;
+            border: 3px solid #808080;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3), inset -2px -2px 5px rgba(0,0,0,0.1);
+        }
+        .bill-btn-20 { background: #c03030; color: white; border: 2px solid #a02020; }
+        .bill-btn-50 { background: #308050; color: white; border: 2px solid #206040; }
+        .bill-btn-100 { background: #c07020; color: white; border: 2px solid #a05010; }
+        .bill-btn-200 { background: #3060a0; color: white; border: 2px solid #204080; }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .bank-btn { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: #5a4010; border: 2px solid var(--gold); }
+        .savings-btn { background: var(--mint); color: #2d5a40; border: 2px solid var(--mint-dark); }
+        .reset-btn { background: var(--pink); color: #8b4050; border: 2px solid var(--pink-dark); }
+        
+        .history-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            border: 3px solid var(--gold);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-deposit { background: #e8f8e8; border-right: 4px solid var(--mint-dark); }
+        .history-withdraw { background: #ffe8e8; border-right: 4px solid var(--pink-dark); }
+        .history-savings { background: #fff8e0; border-right: 4px solid var(--gold); }
+        .history-bank { background: #e8e8f0; border-right: 4px solid #8080a0; }
+        
+        .history-text { font-size: 14px; }
+        .history-amount { font-weight: bold; font-size: 18px; }
+        .history-time { color: #888; font-size: 12px; }
+        
+        .no-history {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            padding: 20px;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            border: 3px solid var(--gold);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-title {
+            text-align: center;
+            color: var(--gold);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid var(--mint-dark);
+            border-radius: 10px;
+            background: white;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .modal-btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .modal-confirm { background: var(--mint); color: #2d5a40; border: 2px solid var(--mint-dark); }
+        .modal-cancel { background: var(--pink); color: #8b4050; border: 2px solid var(--pink-dark); }
+        
+        .error-message {
+            color: #c03030;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .success-message {
+            color: #308050;
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+        }
+        
+        .bank-details-display {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .bank-details-display p {
+            margin: 5px 0;
+        }
+        
+        @keyframes deposit-animation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .depositing { animation: deposit-animation 0.3s ease; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-row">
+            <div class="bsd">בס"ד</div>
+            <div class="current-date" id="currentDate"></div>
+        </div>
+        <h1>💰 הארנק שלי 💰</h1>
+        
+        <div class="wallet">
+            <div class="balances-row">
+                <div class="balance-box wallet-balance">
+                    <div class="balance-label">💵 בארנק</div>
+                    <div class="balance-amount" id="walletBalance">₪0</div>
+                </div>
+                <div class="balance-box savings-balance">
+                    <div class="balance-label">🐷 בחיסכון</div>
+                    <div class="balance-amount" id="savingsBalance">₪0</div>
+                </div>
+                <div class="balance-box bank-balance">
+                    <div class="balance-label">🏦 בבנק</div>
+                    <div class="balance-amount" id="bankBalance">₪0</div>
+                </div>
+            </div>
+            
+            <div class="wallet-contents">
+                <div class="wallet-contents-title">💵 מה יש בארנק:</div>
+                <div class="money-in-wallet" id="walletContents">
+                    <div class="empty-wallet">הארנק ריק 🙁</div>
+                </div>
+            </div>
+            
+            <div class="deposit-section">
+                <div class="section-title">✨ הפקדת כסף</div>
+                
+                <div class="subsection-title">🪙 מטבעות</div>
+                <div class="money-buttons" style="margin-bottom: 15px;">
+                    <button class="money-btn coin-btn" onclick="deposit(1)">₪1</button>
+                    <button class="money-btn coin-btn" onclick="deposit(2)">₪2</button>
+                    <button class="money-btn coin-btn" onclick="deposit(5)">₪5</button>
+                    <button class="money-btn coin-btn gold" onclick="deposit(10)">₪10</button>
+                </div>
+                
+                <div class="subsection-title">💵 שטרות</div>
+                <div class="money-buttons">
+                    <button class="money-btn bill-btn-20" onclick="deposit(20)">₪20</button>
+                    <button class="money-btn bill-btn-50" onclick="deposit(50)">₪50</button>
+                    <button class="money-btn bill-btn-100" onclick="deposit(100)">₪100</button>
+                    <button class="money-btn bill-btn-200" onclick="deposit(200)">₪200</button>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button class="action-btn bank-btn" onclick="openBankModal()">🏦 העברה לחשבון הבנק</button>
+                <button class="action-btn savings-btn" onclick="openSavingsModal()">🐷 העברה לחיסכון</button>
+                <button class="action-btn reset-btn" onclick="doReset()">🔄 התחל מחדש</button>
+            </div>
+        </div>
+        
+        <div class="history-section">
+            <div class="section-title">📜 תנועות</div>
+            <div id="history">
+                <div class="no-history">אין עדיין פעולות</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bank Transfer Modal -->
+    <div class="modal-overlay" id="bankModal">
+        <div class="modal">
+            <div class="modal-title">🏦 העברה לחשבון הבנק</div>
+            
+            <div id="bankFormSection">
+                <div class="form-group">
+                    <label class="form-label">סכום להעברה:</label>
+                    <input type="number" class="form-input" id="bankAmount" placeholder="הזיני סכום" min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">בחרי בנק:</label>
+                    <select class="form-select" id="bankSelect" onchange="updateBranches()">
+                        <option value="">-- בחרי בנק --</option>
+                        <option value="12">בנק הפועלים (12)</option>
+                        <option value="10">בנק לאומי (10)</option>
+                        <option value="11">בנק דיסקונט (11)</option>
+                        <option value="20">בנק מזרחי טפחות (20)</option>
+                        <option value="31">בנק הבינלאומי (31)</option>
+                        <option value="14">בנק אוצר החייל (14)</option>
+                        <option value="17">בנק מרכנתיל (17)</option>
+                        <option value="04">בנק יהב (04)</option>
+                        <option value="09">בנק הדואר (09)</option>
+                        <option value="46">בנק מסד (46)</option>
+                        <option value="54">בנק ירושלים (54)</option>
+                        <option value="26">יובנק (26)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">סניף:</label>
+                    <select class="form-select" id="branchSelect">
+                        <option value="">-- בחרי סניף --</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">מספר חשבון:</label>
+                    <input type="text" class="form-input" id="accountNumber" placeholder="הזיני מספר חשבון" maxlength="9">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">שם בעל/ת החשבון:</label>
+                    <input type="text" class="form-input" id="accountName" placeholder="הזיני שם">
+                </div>
+                
+                <div class="error-message" id="bankError"></div>
+                
+                <div class="modal-buttons">
+                    <button class="modal-btn modal-confirm" onclick="confirmBankTransfer()">בצעי העברה</button>
+                    <button class="modal-btn modal-cancel" onclick="closeBankModal()">ביטול</button>
+                </div>
+            </div>
+            
+            <div id="bankSuccessSection" style="display: none;">
+                <div class="success-message">✅ ההעברה בוצעה בהצלחה!</div>
+                <div class="bank-details-display" id="transferDetails"></div>
+                <div class="modal-buttons">
+                    <button class="modal-btn modal-confirm" onclick="closeBankModal()">סגור</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Savings Modal -->
+    <div class="modal-overlay" id="savingsModal">
+        <div class="modal">
+            <div class="modal-title">🐷 העברה לחיסכון</div>
+            <p style="text-align: center; color: #666; margin-bottom: 15px;">העברה מחשבון הבנק לחיסכון</p>
+            <div class="form-group">
+                <label class="form-label">סכום להעברה:</label>
+                <input type="number" class="form-input" id="savingsAmount" placeholder="כמה להעביר?" min="1">
+            </div>
+            <div class="error-message" id="savingsError"></div>
+            <div class="modal-buttons">
+                <button class="modal-btn modal-confirm" onclick="confirmSavings()">העבירי לחיסכון</button>
+                <button class="modal-btn modal-cancel" onclick="closeSavingsModal()">ביטול</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // === RESET FUNCTION FIRST - חייב להיות ראשון! ===
+        function doReset() {
+            alert('מאפס את הארנק...');
+            localStorage.removeItem('myDigitalWallet');
+            location.reload();
+        }
+        
+        // נתוני סניפים לכל בנק
+        var branchesData = {
+            '12': [ // פועלים
+                {num: '600', name: 'סניף ראשי תל אביב'},
+                {num: '532', name: 'דיזנגוף תל אביב'},
+                {num: '617', name: 'רמת גן'},
+                {num: '690', name: 'חיפה מרכז'},
+                {num: '782', name: 'ירושלים מרכז'},
+                {num: '654', name: 'באר שבע'},
+                {num: '718', name: 'נתניה'},
+                {num: '567', name: 'פתח תקווה'},
+                {num: '623', name: 'ראשון לציון'},
+                {num: '701', name: 'אשדוד'}
+            ],
+            '10': [ // לאומי
+                {num: '800', name: 'סניף ראשי לוד'},
+                {num: '815', name: 'רוטשילד תל אביב'},
+                {num: '862', name: 'רמת גן'},
+                {num: '901', name: 'חיפה'},
+                {num: '850', name: 'ירושלים'},
+                {num: '910', name: 'באר שבע'},
+                {num: '870', name: 'נתניה'},
+                {num: '835', name: 'פתח תקווה'},
+                {num: '842', name: 'ראשון לציון'},
+                {num: '920', name: 'אשדוד'}
+            ],
+            '11': [ // דיסקונט
+                {num: '001', name: 'סניף ראשי תל אביב'},
+                {num: '019', name: 'אלנבי תל אביב'},
+                {num: '052', name: 'רמת גן'},
+                {num: '071', name: 'חיפה'},
+                {num: '091', name: 'ירושלים'},
+                {num: '084', name: 'באר שבע'},
+                {num: '067', name: 'נתניה'},
+                {num: '048', name: 'פתח תקווה'},
+                {num: '055', name: 'ראשון לציון'},
+                {num: '088', name: 'אשדוד'}
+            ],
+            '20': [ // מזרחי טפחות
+                {num: '416', name: 'אשדוד'},
+                {num: '565', name: 'אשדוד סיטי'},
+                {num: '615', name: 'א.ת. אשדוד'},
+                {num: '409', name: 'מרכז עסקים תל אביב'},
+                {num: '469', name: 'אלנבי תל אביב'},
+                {num: '453', name: 'לב דיזנגוף'},
+                {num: '413', name: 'רמת גן'},
+                {num: '477', name: 'המגדל רמת גן'},
+                {num: '441', name: 'חיפה הדר'},
+                {num: '444', name: 'מרכז עסקים חיפה'},
+                {num: '449', name: 'כרמל חיפה'},
+                {num: '401', name: 'קרית העסקים ירושלים'},
+                {num: '417', name: 'מלכי ישראל ירושלים'},
+                {num: '563', name: 'רמות ירושלים'},
+                {num: '426', name: 'מרכז עסקים באר שבע'},
+                {num: '566', name: 'מצדה באר שבע'},
+                {num: '452', name: 'קניון השרון נתניה'},
+                {num: '465', name: 'לב העיר פתח תקווה'},
+                {num: '435', name: 'ראשון לציון'},
+                {num: '427', name: 'אשקלון'},
+                {num: '521', name: 'מודיעין'},
+                {num: '415', name: 'הרצליה'},
+                {num: '468', name: 'חזון איש בני ברק'},
+                {num: '434', name: 'רחובות'},
+                {num: '470', name: 'אילת'}
+            ],
+            '31': [ // הבינלאומי
+                {num: '001', name: 'סניף ראשי תל אביב'},
+                {num: '035', name: 'רמת גן'},
+                {num: '050', name: 'חיפה'},
+                {num: '070', name: 'ירושלים'},
+                {num: '025', name: 'נתניה'},
+                {num: '040', name: 'ראשון לציון'}
+            ],
+            '14': [ // אוצר החייל
+                {num: '101', name: 'סניף ראשי תל אביב'},
+                {num: '120', name: 'חיפה'},
+                {num: '130', name: 'ירושלים'},
+                {num: '115', name: 'באר שבע'},
+                {num: '140', name: 'נתניה'}
+            ],
+            '17': [ // מרכנתיל
+                {num: '001', name: 'סניף ראשי תל אביב'},
+                {num: '014', name: 'רמת גן'},
+                {num: '031', name: 'חיפה'},
+                {num: '045', name: 'ירושלים'}
+            ],
+            '04': [ // יהב
+                {num: '001', name: 'סניף ראשי ירושלים'},
+                {num: '010', name: 'תל אביב'},
+                {num: '020', name: 'חיפה'},
+                {num: '030', name: 'באר שבע'}
+            ],
+            '09': [ // הדואר
+                {num: '001', name: 'סניף ראשי'},
+                {num: '100', name: 'תל אביב מרכז'},
+                {num: '200', name: 'ירושלים'},
+                {num: '300', name: 'חיפה'}
+            ],
+            '46': [ // מסד
+                {num: '001', name: 'סניף ראשי תל אביב'},
+                {num: '005', name: 'ירושלים'},
+                {num: '010', name: 'חיפה'}
+            ],
+            '54': [ // ירושלים
+                {num: '001', name: 'סניף ראשי ירושלים'},
+                {num: '010', name: 'תל אביב'},
+                {num: '020', name: 'בני ברק'}
+            ],
+            '26': [ // יובנק
+                {num: '001', name: 'סניף ראשי'},
+                {num: '010', name: 'תל אביב'}
+            ]
+        };
+        
+        // SVG מטבעות
+        const coinSVGs = {
+            1: `<svg width="50" height="50" viewBox="0 0 100 100">
+                <defs><radialGradient id="c1g" cx="30%" cy="30%"><stop offset="0%" style="stop-color:#f0f0f0"/><stop offset="100%" style="stop-color:#a0a0a0"/></radialGradient></defs>
+                <circle cx="50" cy="50" r="46" fill="url(#c1g)" stroke="#707070" stroke-width="4"/>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#888" stroke-width="1"/>
+                <text x="50" y="45" text-anchor="middle" font-size="18" font-weight="bold" fill="#404040">₪1</text>
+                <text x="50" y="62" text-anchor="middle" font-size="10" fill="#555">שקל</text>
+            </svg>`,
+            2: `<svg width="55" height="55" viewBox="0 0 100 100">
+                <defs><radialGradient id="c2g" cx="30%" cy="30%"><stop offset="0%" style="stop-color:#e8e8e8"/><stop offset="100%" style="stop-color:#909090"/></radialGradient></defs>
+                <circle cx="50" cy="50" r="46" fill="url(#c2g)" stroke="#606060" stroke-width="4"/>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#777" stroke-width="1"/>
+                <text x="50" y="45" text-anchor="middle" font-size="18" font-weight="bold" fill="#353535">₪2</text>
+                <text x="50" y="62" text-anchor="middle" font-size="9" fill="#454545">שקלים</text>
+            </svg>`,
+            5: `<svg width="60" height="60" viewBox="0 0 100 100">
+                <defs><radialGradient id="c5g" cx="30%" cy="30%"><stop offset="0%" style="stop-color:#e0e0e0"/><stop offset="100%" style="stop-color:#888888"/></radialGradient></defs>
+                <circle cx="50" cy="50" r="46" fill="url(#c5g)" stroke="#505050" stroke-width="4"/>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#666" stroke-width="1"/>
+                <text x="50" y="45" text-anchor="middle" font-size="18" font-weight="bold" fill="#303030">₪5</text>
+                <text x="50" y="62" text-anchor="middle" font-size="9" fill="#404040">שקלים</text>
+            </svg>`,
+            10: `<svg width="65" height="65" viewBox="0 0 100 100">
+                <defs>
+                    <radialGradient id="c10o" cx="30%" cy="30%"><stop offset="0%" style="stop-color:#d8d8d8"/><stop offset="100%" style="stop-color:#909090"/></radialGradient>
+                    <radialGradient id="c10i" cx="30%" cy="30%"><stop offset="0%" style="stop-color:#ffe070"/><stop offset="100%" style="stop-color:#c09020"/></radialGradient>
+                </defs>
+                <circle cx="50" cy="50" r="46" fill="url(#c10o)" stroke="#606060" stroke-width="4"/>
+                <circle cx="50" cy="50" r="30" fill="url(#c10i)" stroke="#a08020" stroke-width="2"/>
+                <text x="50" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#5a4010">₪10</text>
+                <text x="50" y="58" text-anchor="middle" font-size="8" fill="#6a5020">שקלים</text>
+            </svg>`
+        };
+        
+        // SVG שטרות
+        const billSVGs = {
+            20: `<svg width="90" height="50" viewBox="0 0 180 100">
+                <defs><linearGradient id="b20" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e05050"/><stop offset="100%" style="stop-color:#a02020"/></linearGradient></defs>
+                <rect x="2" y="2" width="176" height="96" rx="6" fill="url(#b20)" stroke="#801515" stroke-width="3"/>
+                <rect x="8" y="8" width="164" height="84" rx="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                <text x="90" y="45" text-anchor="middle" font-size="28" font-weight="bold" fill="#fff">₪20</text>
+                <text x="90" y="70" text-anchor="middle" font-size="12" fill="#ffd0d0">רחל המשוררת</text>
+            </svg>`,
+            50: `<svg width="90" height="50" viewBox="0 0 180 100">
+                <defs><linearGradient id="b50" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#40a060"/><stop offset="100%" style="stop-color:#206040"/></linearGradient></defs>
+                <rect x="2" y="2" width="176" height="96" rx="6" fill="url(#b50)" stroke="#104030" stroke-width="3"/>
+                <rect x="8" y="8" width="164" height="84" rx="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                <text x="90" y="45" text-anchor="middle" font-size="28" font-weight="bold" fill="#fff">₪50</text>
+                <text x="90" y="70" text-anchor="middle" font-size="11" fill="#c0ffc0">טשרניחובסקי</text>
+            </svg>`,
+            100: `<svg width="90" height="50" viewBox="0 0 180 100">
+                <defs><linearGradient id="b100" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e09030"/><stop offset="100%" style="stop-color:#a05810"/></linearGradient></defs>
+                <rect x="2" y="2" width="176" height="96" rx="6" fill="url(#b100)" stroke="#704010" stroke-width="3"/>
+                <rect x="8" y="8" width="164" height="84" rx="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                <text x="90" y="45" text-anchor="middle" font-size="26" font-weight="bold" fill="#fff">₪100</text>
+                <text x="90" y="70" text-anchor="middle" font-size="12" fill="#ffe0c0">לאה גולדברג</text>
+            </svg>`,
+            200: `<svg width="90" height="50" viewBox="0 0 180 100">
+                <defs><linearGradient id="b200" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4080c0"/><stop offset="100%" style="stop-color:#204580"/></linearGradient></defs>
+                <rect x="2" y="2" width="176" height="96" rx="6" fill="url(#b200)" stroke="#102550" stroke-width="3"/>
+                <rect x="8" y="8" width="164" height="84" rx="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                <text x="90" y="45" text-anchor="middle" font-size="26" font-weight="bold" fill="#fff">₪200</text>
+                <text x="90" y="70" text-anchor="middle" font-size="12" fill="#c0e0ff">נתן אלתרמן</text>
+            </svg>`
+        };
+        
+        // מצב
+        let state = {
+            wallet: { 1: 0, 2: 0, 5: 0, 10: 0, 20: 0, 50: 0, 100: 0, 200: 0 },
+            savings: 0,
+            bank: 0,
+            bankAccount: null,
+            history: [],
+            deposits: []
+        };
+        
+        function loadState() {
+            const saved = localStorage.getItem('myDigitalWallet');
+            if (saved) {
+                state = JSON.parse(saved);
+            }
+            updateDisplay();
+        }
+        
+        function saveState() {
+            localStorage.setItem('myDigitalWallet', JSON.stringify(state));
+        }
+        
+        function getWalletBalance() {
+            var total = 0;
+            for (var denom in state.wallet) {
+                total += parseInt(denom) * state.wallet[denom];
+            }
+            return total;
+        }
+        
+        function formatNumber(num) {
+            return num.toLocaleString('he-IL');
+        }
+        
+        function autoSizeBalance(el) {
+            var text = el.textContent;
+            if (text.length > 10) {
+                el.style.fontSize = '14px';
+            } else if (text.length > 7) {
+                el.style.fontSize = '17px';
+            } else if (text.length > 5) {
+                el.style.fontSize = '20px';
+            } else {
+                el.style.fontSize = '24px';
+            }
+        }
+        
+        function deposit(amount) {
+            state.wallet[amount]++;
+            var now = new Date();
+            var timeStr = now.toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem', 
+                day: '2-digit', 
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            if (!state.deposits) state.deposits = [];
+            state.deposits.push({ amount: amount, time: timeStr });
+            addHistory('deposit', amount, 'הפקדת ₪' + amount);
+            saveState();
+            updateDisplay();
+            
+            document.getElementById('walletBalance').classList.add('depositing');
+            setTimeout(function() { document.getElementById('walletBalance').classList.remove('depositing'); }, 300);
+        }
+        
+        function updateDisplay() {
+            document.getElementById('walletBalance').textContent = '₪' + formatNumber(getWalletBalance());
+            document.getElementById('savingsBalance').textContent = '₪' + formatNumber(state.savings);
+            document.getElementById('bankBalance').textContent = '₪' + formatNumber(state.bank);
+            
+            autoSizeBalance(document.getElementById('walletBalance'));
+            autoSizeBalance(document.getElementById('savingsBalance'));
+            autoSizeBalance(document.getElementById('bankBalance'));
+            
+            // עדכון תוכן הארנק - תצוגה מקובצת
+            var contentsEl = document.getElementById('walletContents');
+            var html = '';
+            
+            var denominations = [1, 2, 5, 10, 20, 50, 100, 200];
+            
+            for (var i = 0; i < denominations.length; i++) {
+                var denom = denominations[i];
+                if (state.wallet[denom] > 0) {
+                    var svg = denom <= 10 ? coinSVGs[denom] : billSVGs[denom];
+                    html += '<div class="money-item">' +
+                        svg +
+                        '<span class="money-count">x' + state.wallet[denom] + '</span>' +
+                    '</div>';
+                }
+            }
+            
+            if (html === '') {
+                html = '<div class="empty-wallet">הארנק ריק 🙁</div>';
+            }
+            
+            contentsEl.innerHTML = html;
+            updateHistory();
+        }
+        
+        function addHistory(type, amount, text) {
+            const now = new Date();
+            const timeStr = now.toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem', 
+                day: '2-digit', 
+                month: '2-digit',
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            state.history.unshift({ type, amount, text, time: timeStr });
+            if (state.history.length > 30) state.history.pop();
+        }
+        
+        function updateHistory() {
+            const historyEl = document.getElementById('history');
+            
+            if (state.history.length === 0) {
+                historyEl.innerHTML = '<div class="no-history">אין עדיין פעולות</div>';
+                return;
+            }
+            
+            let html = '';
+            state.history.forEach(item => {
+                let className = 'history-deposit';
+                if (item.type === 'withdraw' || item.type === 'bank') className = 'history-bank';
+                if (item.type === 'savings') className = 'history-savings';
+                
+                html += `<div class="history-item ${className}">
+                    <div>
+                        <div class="history-text">${item.text}</div>
+                        <div class="history-time">${item.time}</div>
+                    </div>
+                    <span class="history-amount">₪${item.amount}</span>
+                </div>`;
+            });
+            
+            historyEl.innerHTML = html;
+        }
+        
+        function updateBranches() {
+            const bankCode = document.getElementById('bankSelect').value;
+            const branchSelect = document.getElementById('branchSelect');
+            
+            branchSelect.innerHTML = '<option value="">-- בחרי סניף --</option>';
+            
+            if (bankCode && branchesData[bankCode]) {
+                branchesData[bankCode].forEach(branch => {
+                    const option = document.createElement('option');
+                    option.value = branch.num;
+                    option.textContent = `${branch.num} - ${branch.name}`;
+                    branchSelect.appendChild(option);
+                });
+            }
+        }
+        
+        function openBankModal() {
+            document.getElementById('bankModal').style.display = 'flex';
+            document.getElementById('bankFormSection').style.display = 'block';
+            document.getElementById('bankSuccessSection').style.display = 'none';
+            document.getElementById('bankError').textContent = '';
+            document.getElementById('bankAmount').value = '';
+        }
+        
+        function closeBankModal() {
+            document.getElementById('bankModal').style.display = 'none';
+        }
+        
+        function confirmBankTransfer() {
+            const amount = parseInt(document.getElementById('bankAmount').value);
+            const bankSelect = document.getElementById('bankSelect');
+            const branchSelect = document.getElementById('branchSelect');
+            const accountNumber = document.getElementById('accountNumber').value;
+            const accountName = document.getElementById('accountName').value;
+            
+            const balance = getWalletBalance();
+            
+            if (!amount || amount <= 0) {
+                document.getElementById('bankError').textContent = 'נא להזין סכום תקין';
+                return;
+            }
+            if (amount > balance) {
+                document.getElementById('bankError').textContent = 'אין מספיק כסף בארנק!';
+                return;
+            }
+            if (!bankSelect.value) {
+                document.getElementById('bankError').textContent = 'נא לבחור בנק';
+                return;
+            }
+            if (!branchSelect.value) {
+                document.getElementById('bankError').textContent = 'נא לבחור סניף';
+                return;
+            }
+            if (!accountNumber || accountNumber.length < 4) {
+                document.getElementById('bankError').textContent = 'נא להזין מספר חשבון תקין';
+                return;
+            }
+            if (!accountName) {
+                document.getElementById('bankError').textContent = 'נא להזין שם בעל/ת החשבון';
+                return;
+            }
+            
+            // ביצוע ההעברה
+            let remaining = amount;
+            const denominations = [200, 100, 50, 20, 10, 5, 2, 1];
+            
+            for (let denom of denominations) {
+                while (remaining >= denom && state.wallet[denom] > 0) {
+                    state.wallet[denom]--;
+                    remaining -= denom;
+                }
+            }
+            
+            state.bank += amount;
+            state.bankAccount = {
+                bankName: bankSelect.options[bankSelect.selectedIndex].text,
+                bankCode: bankSelect.value,
+                branch: branchSelect.value,
+                branchName: branchSelect.options[branchSelect.selectedIndex].text,
+                account: accountNumber,
+                name: accountName
+            };
+            
+            addHistory('bank', amount, `העברה לבנק - ${state.bankAccount.bankName.split(' (')[0]}`);
+            saveState();
+            updateDisplay();
+            
+            // הצגת הצלחה
+            var now = new Date();
+            var dateStr = now.toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem', 
+                day: '2-digit', 
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('bankFormSection').style.display = 'none';
+            document.getElementById('bankSuccessSection').style.display = 'block';
+            document.getElementById('transferDetails').innerHTML = 
+                '<p><strong>תאריך ושעה:</strong> ' + dateStr + '</p>' +
+                '<p><strong>סכום:</strong> ₪' + amount + '</p>' +
+                '<p><strong>בנק:</strong> ' + state.bankAccount.bankName + '</p>' +
+                '<p><strong>סניף:</strong> ' + state.bankAccount.branchName + '</p>' +
+                '<p><strong>מספר חשבון:</strong> ' + accountNumber + '</p>' +
+                '<p><strong>שם:</strong> ' + accountName + '</p>' +
+                '<p style="margin-top:10px; color: var(--gold); font-weight:bold;">✅ ההעברה בוצעה בהצלחה</p>';
+        }
+        
+        function openSavingsModal() {
+            document.getElementById('savingsModal').style.display = 'flex';
+            document.getElementById('savingsError').textContent = '';
+            document.getElementById('savingsAmount').value = '';
+        }
+        
+        function closeSavingsModal() {
+            document.getElementById('savingsModal').style.display = 'none';
+        }
+        
+        function confirmSavings() {
+            var amount = parseInt(document.getElementById('savingsAmount').value);
+            
+            if (!amount || amount <= 0) {
+                document.getElementById('savingsError').textContent = 'נא להזין סכום תקין';
+                return;
+            }
+            if (amount > state.bank) {
+                document.getElementById('savingsError').textContent = 'אין מספיק כסף בחשבון הבנק!';
+                return;
+            }
+            
+            state.bank -= amount;
+            state.savings += amount;
+            addHistory('savings', amount, 'העברה מהבנק לחיסכון 🐷');
+            saveState();
+            updateDisplay();
+            
+            var now = new Date();
+            var dateStr = now.toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem', 
+                day: '2-digit', 
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            alert('✅ הועבר לחיסכון בהצלחה!\n\nסכום: ₪' + amount + '\nתאריך: ' + dateStr);
+            closeSavingsModal();
+        }
+        
+        // סגירת מודאל בלחיצה בחוץ
+        document.getElementById('bankModal').addEventListener('click', function(e) {
+            if (e.target === this) closeBankModal();
+        });
+        document.getElementById('savingsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSavingsModal();
+        });
+        
+        // טעינה
+        // הצגת תאריך נוכחי
+        function updateCurrentDate() {
+            var now = new Date();
+            var dateStr = now.toLocaleDateString('he-IL', { 
+                timeZone: 'Asia/Jerusalem',
+                weekday: 'long',
+                day: 'numeric', 
+                month: 'long',
+                year: 'numeric'
+            });
+            document.getElementById('currentDate').textContent = dateStr;
+        }
+        
+        updateCurrentDate();
+        loadState();
+    </script>
+</body>
+</html>
