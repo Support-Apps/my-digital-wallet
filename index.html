@@ -641,23 +641,26 @@
             var printDiv = document.createElement('div');
             printDiv.id = 'printArea';
             printDiv.innerHTML = 
-                '<div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; direction: rtl;">' +
-                '<div style="text-align: center; margin-bottom: 20px;">' +
-                    '<div style="margin-bottom: 10px;">' + mizrahiLogo + '</div>' +
+                '<div style="font-family: Arial, sans-serif; padding: 30px; max-width: 600px; margin: 0 auto; direction: rtl; line-height: 1.8;">' +
+                '<div style="text-align: center; margin-bottom: 30px;">' +
+                    '<div style="margin-bottom: 15px;">' + mizrahiLogo + '</div>' +
                 '</div>' +
-                '<h2 style="text-align: center; color: #333; border-bottom: 2px solid #f60; padding-bottom: 10px;">תדפיס תנועות חשבון</h2>' +
-                '<div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 10px;">' +
-                    '<p><strong>תאריך הפקה:</strong> ' + dateStr + '</p>' +
-                    '<p><strong>יתרה בארנק:</strong> ₪' + formatNumber(getWalletBalance()) + '</p>' +
-                    '<p><strong>יתרה בחיסכון:</strong> ₪' + formatNumber(state.savings) + '</p>' +
-                    '<p><strong>יתרה בבנק:</strong> ₪' + formatNumber(state.bank) + '</p>' +
+                '<h2 style="text-align: center; color: #333; border-bottom: 2px solid #f60; padding-bottom: 15px; margin-bottom: 25px;">תדפיס תנועות חשבון</h2>' +
+                '<div style="margin: 25px 0; padding: 20px; background: #f9f9f9; border-radius: 10px;">' +
+                    '<p style="margin: 12px 0;"><strong>שם בעל החשבון:</strong> תמי שרה</p>' +
+                    '<p style="margin: 12px 0;"><strong>מספר חשבון:</strong> 125659</p>' +
+                    '<p style="margin: 12px 0;"><strong>תאריך הפקה:</strong> ' + dateStr + '</p>' +
+                    '<hr style="border: none; border-top: 1px solid #ddd; margin: 15px 0;">' +
+                    '<p style="margin: 12px 0;"><strong>יתרה בארנק:</strong> ₪' + formatNumber(getWalletBalance()) + '</p>' +
+                    '<p style="margin: 12px 0;"><strong>יתרה בחיסכון:</strong> ₪' + formatNumber(state.savings) + '</p>' +
+                    '<p style="margin: 12px 0;"><strong>יתרה בבנק:</strong> ₪' + formatNumber(state.bank) + '</p>' +
                 '</div>' +
-                '<h3 style="color: #f60;">תנועות אחרונות:</h3>' +
+                '<h3 style="color: #f60; margin-top: 30px; margin-bottom: 15px;">תנועות אחרונות:</h3>' +
                 '<table style="width: 100%; border-collapse: collapse;">' +
                     '<thead><tr style="background: #f60; color: white;">' +
-                        '<th style="padding: 10px; text-align: right;">תאריך</th>' +
-                        '<th style="padding: 10px; text-align: right;">פעולה</th>' +
-                        '<th style="padding: 10px; text-align: left;">סכום</th>' +
+                        '<th style="padding: 12px; text-align: right;">תאריך</th>' +
+                        '<th style="padding: 12px; text-align: right;">פעולה</th>' +
+                        '<th style="padding: 12px; text-align: left;">סכום</th>' +
                     '</tr></thead>' +
                     '<tbody>' + historyHtml + '</tbody>' +
                 '</table>' +
