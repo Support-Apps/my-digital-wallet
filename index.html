@@ -470,7 +470,8 @@
             <div class="actions">
                 <button class="action-btn bank-btn" onclick="openBankModal()">🏦 העברה לחשבון הבנק</button>
                 <button class="action-btn savings-btn" onclick="openSavingsModal()">🐷 העברה לחיסכון</button>
-                <button class="action-btn reset-btn" onclick="doReset()">🔄 התחל מחדש</button>
+                <button class="action-btn" style="background: #f0f0f0; color: #333; border: 2px solid #ccc;" onclick="printStatement()">🖨️ הדפסת תדפיס</button>
+                <button class="action-btn" style="background: #25D366; color: white; border: 2px solid #128C7E;" onclick="shareStatement()">📤 שיתוף</button>
             </div>
         </div>
         
@@ -566,10 +567,124 @@
     
     <script>
         // === RESET FUNCTION FIRST - חייב להיות ראשון! ===
-        function doReset() {
-            alert('מאפס את הארנק...');
-            localStorage.removeItem('myDigitalWallet');
-            location.reload();
+        var mizrahiLogo = 'data:image/jpeg;base64,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';
+        
+        function printStatement() {
+            var now = new Date();
+            var dateStr = now.toLocaleString('he-IL', { 
+                timeZone: 'Asia/Jerusalem',
+                day: '2-digit', 
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit'
+            });
+            
+            var historyHtml = '';
+            if (state.history && state.history.length > 0) {
+                for (var i = 0; i < state.history.length; i++) {
+                    var item = state.history[i];
+                    historyHtml += '<tr>' +
+                        '<td style="padding: 8px; border-bottom: 1px solid #eee;">' + item.time + '</td>' +
+                        '<td style="padding: 8px; border-bottom: 1px solid #eee;">' + item.text + '</td>' +
+                        '<td style="padding: 8px; border-bottom: 1px solid #eee; text-align: left;">₪' + formatNumber(item.amount) + '</td>' +
+                    '</tr>';
+                }
+            } else {
+                historyHtml = '<tr><td colspan="3" style="padding: 20px; text-align: center; color: #888;">אין תנועות</td></tr>';
+            }
+            
+            // יצירת div להדפסה
+            var printDiv = document.createElement('div');
+            printDiv.id = 'printArea';
+            printDiv.innerHTML = 
+                '<div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; direction: rtl;">' +
+                '<div style="text-align: center; margin-bottom: 20px;">' +
+                    '<img src="' + mizrahiLogo + '" style="height: 50px; margin-bottom: 10px;"><br>' +
+                    '<span style="color: #f60; font-weight: bold; font-size: 18px;">בנק מזרחי טפחות</span>' +
+                '</div>' +
+                '<h2 style="text-align: center; color: #333; border-bottom: 2px solid #f60; padding-bottom: 10px;">תדפיס תנועות חשבון</h2>' +
+                '<div style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 10px;">' +
+                    '<p><strong>תאריך הפקה:</strong> ' + dateStr + '</p>' +
+                    '<p><strong>יתרה בארנק:</strong> ₪' + formatNumber(getWalletBalance()) + '</p>' +
+                    '<p><strong>יתרה בחיסכון:</strong> ₪' + formatNumber(state.savings) + '</p>' +
+                    '<p><strong>יתרה בבנק:</strong> ₪' + formatNumber(state.bank) + '</p>' +
+                '</div>' +
+                '<h3 style="color: #f60;">תנועות אחרונות:</h3>' +
+                '<table style="width: 100%; border-collapse: collapse;">' +
+                    '<thead><tr style="background: #f60; color: white;">' +
+                        '<th style="padding: 10px; text-align: right;">תאריך</th>' +
+                        '<th style="padding: 10px; text-align: right;">פעולה</th>' +
+                        '<th style="padding: 10px; text-align: left;">סכום</th>' +
+                    '</tr></thead>' +
+                    '<tbody>' + historyHtml + '</tbody>' +
+                '</table>' +
+                '<p style="text-align: center; margin-top: 30px; color: #888; font-size: 12px;">תדפיס זה הופק מאפליקציית הארנק הדיגיטלי</p>' +
+                '</div>';
+            
+            // הצגת התדפיס במודאל
+            var modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; overflow: auto; padding: 10px;';
+            
+            var closeBtn = document.createElement('button');
+            closeBtn.textContent = '✕ סגור';
+            closeBtn.style.cssText = 'position: fixed; top: 10px; left: 10px; padding: 10px 20px; background: #f60; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; z-index: 10000;';
+            closeBtn.onclick = function() { document.body.removeChild(modal); };
+            
+            modal.appendChild(closeBtn);
+            modal.appendChild(printDiv);
+            document.body.appendChild(modal);
+            
+            alert('התדפיס מוצג! לשמירה: צילום מסך או שיתוף 📸');
+        }
+        
+        function shareStatement() {
+            var now = new Date();
+            var dateStr = now.toLocaleString('he-IL', { 
+                timeZone: 'Asia/Jerusalem',
+                day: '2-digit', 
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit'
+            });
+            
+            var text = '📊 תדפיס חשבון - בנק מזרחי טפחות\n' +
+                '📅 ' + dateStr + '\n\n' +
+                '💵 יתרה בארנק: ₪' + formatNumber(getWalletBalance()) + '\n' +
+                '🐷 יתרה בחיסכון: ₪' + formatNumber(state.savings) + '\n' +
+                '🏦 יתרה בבנק: ₪' + formatNumber(state.bank) + '\n\n' +
+                '📜 תנועות אחרונות:\n';
+            
+            if (state.history && state.history.length > 0) {
+                var limit = Math.min(state.history.length, 10);
+                for (var i = 0; i < limit; i++) {
+                    var item = state.history[i];
+                    text += '• ' + item.text + ' - ₪' + formatNumber(item.amount) + ' (' + item.time + ')\n';
+                }
+            } else {
+                text += 'אין תנועות';
+            }
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'תדפיס חשבון',
+                    text: text
+                }).catch(function(err) {
+                    console.log('Share error:', err);
+                    copyToClipboard(text);
+                });
+            } else {
+                copyToClipboard(text);
+            }
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('התדפיס הועתק! ניתן להדביק בוואטסאפ או בכל מקום אחר');
+            }).catch(function() {
+                alert('לא ניתן להעתיק. נסי שוב.');
+            });
         }
         
         // נתוני סניפים לכל בנק
